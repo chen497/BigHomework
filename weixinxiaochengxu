@@ -1,0 +1,88 @@
+//yindao.js
+
+const devicesId = "576589502" // 填写在OneNet上获得的devicesId 形式就是一串数字 例子:9939133 change
+const api_key = "KbFl7V9Rjtw02VSzqJI=9GmbcVc=" // 填写在OneNet上的 api-key 例子: VeFI0HZ44Qn5dZO14AuLbWSlSlI= change
+
+Page({
+  data: {
+    num: 0
+  },
+
+  getDatapoints: function () {
+
+    wx.request({
+      url: "https://api.heclouds.com/devices/${devicesId}/datapoints?datastream_id=Temperature&limit=20`,",//change
+      /**
+       * 添加HTTP报文的请求头, 
+       * 其中api-key为OneNet的api文档要求我们添加的鉴权秘钥
+       * Content-Type的作用是标识请求体的格式, 从api文档中我们读到请求体是json格式的
+       * 故content-type属性应设置为application/json
+       */
+      header: {
+        'content-type': 'application/json',
+        'api-key': api_key
+      },
+      success: (res) => {
+        const reponse = res.data
+        var numm = this.data.num
+        this.setData({
+          numm: response.data.datastreams[0].datapoints.reverse()
+        })
+        //程序可以运行到这里说明请求成功, 将Promise置为resolve状态
+      }
+    })
+
+  }
+
+})
+resolve({
+  chumo: response.data.datastreams[0].datapoints.reverse()
+})
+        
+fail: (err) => {
+  reject(err)
+}
+  /**
+   * 传入获取到的数据点, 函数自动更新图标
+   */
+update: function (datapoints) {
+  const wheatherData = this.convert(datapoints);
+this.lineChart_tempe.updateData({
+  categories: wheatherData.categories,
+  series: [{
+    name: 'tempe',
+    data: wheatherData.tempe,
+    format: (val, name) => val.toFixed(2)
+  }],
+})
+
+  }
+
+
+
+//index.js
+Page({
+  data: {
+
+  },
+  //跳转到下车地点页面
+  navigate: function () {
+    wx.navigateTo({
+      url: '../wifi-station/yindao/yindao',
+    })
+    
+  }
+})
+
+
+
+<!--index.wxml-->
+<view class="intro">
+  目的: 了解需要帮助的下车地点
+</view>
+
+<button class="btn1" bindtap="navigate">确认帮助，查看地点</button>
+<view>
+<image src="../../images/123.jpg"></image>
+
+</view>
